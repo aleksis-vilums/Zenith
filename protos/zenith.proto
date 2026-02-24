@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.zenith.bu";
+option java_outer_classname = "ZenithService";
+option objc_class_prefix = "ZEN";
+
+package zenith;
+
+//Zenith Service
+service Zenith {
+    //Hello World
+    rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+message HelloRequest {
+    string name = 1;
+}
+
+message HelloReply {
+    string message = 1;
+}

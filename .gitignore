@@ -1,0 +1,8 @@
+/build/
+/cmake/build/
+*.pb.cc
+*.pb.h
+*.grpc.pb.cc
+*.grpc.pb.h
+.git
+
