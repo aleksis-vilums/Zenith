@@ -5,6 +5,9 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <chrono>
+#include <thread>
+#include <random>
 
 #include "absl/flags/flag.h"
 #include "absl/flags/parse.h"
@@ -19,19 +22,42 @@
 using grpc::Server;
 using grpc::ServerBuilder;
 using grpc::ServerContext;
+using grpc::ServerWriter;
 using grpc::Status;
 using zenith::Zenith;
 using zenith::HelloReply;
 using zenith::HelloRequest;
+using zenith::TickRequest;
+using zenith::TickResponse;
 
 ABSL_FLAG(uint16_t, port, 50051, "Server port for the service");
 
 // Logic and data behind the server's behavior.
 class ZenithServiceImpl final : public Zenith::Service {
   Status SayHello(ServerContext* context, const HelloRequest* request,
-                  HelloReply* reply) override {
+                    HelloReply* reply) override {
     std::string prefix("Hello ");
     reply->set_message(prefix + request->name());
+    return Status::OK;
+  }
+  Status GenerateTicks(ServerContext* context, const TickRequest* request,
+                        ServerWriter<TickResponse>* writer) {
+    std::default_random_engine generator;
+    std::uniform_real_distribution<double> dist(-0.5, 0.5);
+
+    double price = 100.0;
+
+    for (int i = 0; i < 100; ++i){
+      TickResponse response;
+      price += dist(generator);
+      response.set_tick(request->tick());
+      response.set_price(price);
+      response.set_date(std::time(nullptr));
+
+      writer->Write(response);
+
+      std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
     return Status::OK;
   }
 };

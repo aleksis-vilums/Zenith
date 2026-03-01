@@ -21,6 +21,8 @@ using grpc::Status;
 using zenith::Zenith;
 using zenith::HelloReply;
 using zenith::HelloRequest;
+using zenith::TickRequest;
+using zenith::TickResponse;
 
 class ZenithClient {
  public:
@@ -52,7 +54,26 @@ class ZenithClient {
                 << std::endl;
       return "RPC failed";
     }
+  }
 
+  void GenerateTicks(const std::string& tick){
+    TickRequest request;
+    request.set_tick(tick);
+
+    ClientContext context;
+
+    auto reader = stub_->GenerateTicks(&context, request);
+    TickResponse reply;
+
+    while (reader->Read(&reply)){
+      std::cout << "Symbol: " << reply.tick() << " | Price: " << reply.price() << " | Date (YYYYMMDD)" << reply.date() << std::endl;
+    }
+
+    Status status = reader->Finish();
+    if (!status.ok()){
+      std::cout << status.error_code() << ": " << status.error_message()
+                << std::endl;
+    }
   }
 
  private:
@@ -72,5 +93,8 @@ int main(int argc, char** argv) {
   std::string user("world");
   std::string reply = greeter.SayHello(user);
   std::cout << "Greeter received: " << reply << std::endl;
+
+  std::string tick("NFLX");
+  greeter.GenerateTicks(tick);
   return 0;
 }

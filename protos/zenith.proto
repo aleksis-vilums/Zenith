@@ -9,8 +9,11 @@ package zenith;
 
 //Zenith Service
 service Zenith {
-    //Hello World
+    //Hello World Unary RPC
     rpc SayHello (HelloRequest) returns (HelloReply) {}
+
+    //market Ticks Server Stream RPC
+    rpc GenerateTicks (TickRequest) returns (stream TickResponse) {}
 }
 
 message HelloRequest {
@@ -19,4 +22,14 @@ message HelloRequest {
 
 message HelloReply {
     string message = 1;
+}
+
+message TickRequest {
+    string tick = 1;
+}
+
+message TickResponse {
+    string tick = 1;
+    double price = 2;
+    int32 date = 3;
 }
