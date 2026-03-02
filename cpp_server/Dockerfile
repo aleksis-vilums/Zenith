@@ -14,12 +14,16 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-COPY . .
+COPY cpp_server/ .
 
-RUN mkdir build && cd build && \
-    cmake -DCMAKE_BUILD_TYPE=Release .. && \
-    cmake --build . -j 4
+COPY protos/ ../protos
+
+RUN mkdir build
+WORKDIR /app/build
+
+RUN cmake ..
+RUN cmake --build . -j 4
 
 EXPOSE 50051
 
-CMD ["./build/zenith_server"]
+CMD ["./zenith_server"]

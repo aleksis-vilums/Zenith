@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  zenith-server:
+    build:
+      context: .
+      dockerfile: cpp_server/Dockerfile
+    container_name: zenith-server
+    ports:
+      - "50051:50051"
+
+  zenith-client:
+    build: 
+      context: .
+      dockerfile: python_client/Dockerfile
+    container_name: zenith-client
+    depends_on:
+      - zenith-server

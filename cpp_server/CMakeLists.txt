@@ -5,7 +5,7 @@ project(Zenith C CXX)
 include(cmake/common.cmake)
 
 #Proto Files
-get_filename_component(hw_proto "protos/zenith.proto" ABSOLUTE)
+get_filename_component(hw_proto "../protos/zenith.proto" ABSOLUTE)
 get_filename_component(hw_proto_path "${hw_proto}" PATH)
 
 # Generated sources

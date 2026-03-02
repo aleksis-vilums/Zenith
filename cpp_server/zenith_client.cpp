@@ -7,11 +7,7 @@
 #include "absl/flags/flag.h"
 #include "absl/flags/parse.h"
 
-#ifdef BAZEL_BUILD
-#include "protos/zenith.grpc.pb.h"
-#else
 #include "zenith.grpc.pb.h"
-#endif
 
 ABSL_FLAG(std::string, target, "zenith-server:50051", "Server address");
 
@@ -66,7 +62,7 @@ class ZenithClient {
     TickResponse reply;
 
     while (reader->Read(&reply)){
-      std::cout << "Symbol: " << reply.tick() << " | Price: " << reply.price() << " | Date (YYYYMMDD)" << reply.date() << std::endl;
+      std::cout << "Symbol: " << reply.tick() << " | Price: " << reply.price() << " | Date (YYYYMMDD) " << reply.date() << std::endl;
     }
 
     Status status = reader->Finish();

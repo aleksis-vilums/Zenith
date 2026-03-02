@@ -13,11 +13,7 @@
 #include "absl/flags/parse.h"
 #include "absl/strings/str_format.h"
 
-#ifdef BAZEL_BUILD
-#include "protos/zenith.grpc.pb.h"
-#else
 #include "zenith.grpc.pb.h"
-#endif
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -63,7 +59,7 @@ class ZenithServiceImpl final : public Zenith::Service {
 };
 
 void RunServer(uint16_t port) {
-  std::string server_address = absl::StrFormat("0.0.0.0:%d", port);
+  std::string server_address = absl::StrFormat("[::]:%d", port);
   ZenithServiceImpl service;
 
   grpc::EnableDefaultHealthCheckService(true);
