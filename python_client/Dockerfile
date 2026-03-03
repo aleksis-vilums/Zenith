@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN pip install grpcio grpcio-tools
+RUN pip install grpcio grpcio-tools river
 
 # generate python grpc code inside python_client folder
 RUN python -m grpc_tools.protoc \

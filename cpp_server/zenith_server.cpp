@@ -43,9 +43,13 @@ class ZenithServiceImpl final : public Zenith::Service {
 
     double price = 100.0;
 
-    for (int i = 0; i < 100; ++i){
+    for (int i = 0; i < 1000; ++i){
       TickResponse response;
-      price += dist(generator);
+      if (i > 740 && i < 800){
+        price = 125.0 + dist(generator);
+      } else {
+        price += dist(generator);
+      }
       response.set_tick(request->tick());
       response.set_price(price);
       response.set_date(std::time(nullptr));
